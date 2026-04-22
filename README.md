@@ -1,6 +1,6 @@
 # MIRL 3D Artifact Analyzer
 
-A browser-based tool for visualizing and quantitatively analyzing 3D-scanned
+A lightweight, browser-based tool for visualizing and quantitatively analyzing 3D-scanned
 cultural artifacts. Developed at the [Material / Image Research Lab](https://mirl.arthistory.ucsb.edu),
 Department of History of Art & Architecture, UC Santa Barbara.
 
