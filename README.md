@@ -33,7 +33,7 @@ cd mirl-3d-analyzer
 python3 -m http.server 8000
 ```
 
-Open <http://localhost:8000> in Chrome.
+Open <http://localhost:8000> in your browser. 
 
 > **Note:** opening `index.html` directly by double-clicking (via `file://`)
 > will **not** work — browsers refuse to load ES modules from `file://`.
