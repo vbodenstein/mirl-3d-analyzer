@@ -1,0 +1,105 @@
+/* ─── Controls ─── */
+.cg { margin-bottom:11px; }
+.cg:last-child { margin-bottom:0; }
+.cl { font-size:11.5px; font-weight:500; color:var(--text2); margin-bottom:5px; display:block; }
+.tg { display:flex; flex-wrap:wrap; gap:3px; }
+.tb { padding:4px 9px; border-radius:4px; border:1px solid var(--border); background:var(--panel); color:var(--text2); font-size:11.5px; font-family:inherit; cursor:pointer; transition:all .15s; }
+.tb:hover { border-color:var(--ucsb-navy); color:var(--ucsb-navy); }
+.tb.active { background:var(--ucsb-navy); border-color:var(--ucsb-navy); color:#fff; font-weight:600; }
+.sr { display:flex; align-items:center; gap:7px; margin-top:3px; }
+.sr input[type=range] { flex:1; accent-color:var(--accent); height:3px; }
+.sv { font-size:10.5px; color:var(--text2); min-width:34px; text-align:right; font-variant-numeric:tabular-nums; }
+.chk { display:flex; align-items:center; gap:7px; font-size:11.5px; color:var(--text); cursor:pointer; padding:2px 0; }
+.chk input { accent-color:var(--accent); }
+
+/* ─── Buttons ─── */
+.btn { padding:7px 14px; border-radius:4px; border:1px solid var(--border-dk); background:var(--panel); color:var(--text); font-size:12px; font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all .15s; font-weight:500; }
+.btn:hover { background:var(--bg2); border-color:var(--ucsb-navy); color:var(--ucsb-navy); }
+.btn-primary { background:var(--ucsb-navy); color:white; border-color:var(--ucsb-navy); }
+.btn-primary:hover { background:var(--ucsb-navy-md); border-color:var(--ucsb-navy-md); color:white; }
+.btn-sm { padding:5px 10px; font-size:11.5px; }
+.btn-block { width:100%; justify-content:center; }
+select { width:100%; padding:5px 8px; border:1px solid var(--border); border-radius:4px; font-size:12px; font-family:inherit; background:var(--panel); color:var(--text); cursor:pointer; }
+
+/* ─── Viewport ─── */
+.viewport { flex:1; position:relative; overflow:hidden; background:#dedad4; }
+.vp-canvas { width:100%; height:100%; display:block; }
+
+/* ─── Upload Overlay ─── */
+.upload-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:5; background:var(--bg); }
+.upload-overlay.hidden { display:none; }
+.upload-box { text-align:center; padding:50px 70px; border:2px dashed var(--border-dk); border-radius:6px; background:var(--panel); cursor:pointer; transition:all .2s; }
+.upload-box:hover, .upload-box.dragover { border-color:var(--ucsb-navy); background:var(--accent-bg); }
+.upload-icon { font-size:42px; color:var(--ucsb-navy); margin-bottom:14px; }
+.upload-box h2 { font-size:17px; font-weight:600; margin-bottom:7px; color:var(--ucsb-navy); }
+.upload-box p { font-size:12px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+.upload-box input[type=file] { display:none; }
+
+/* ─── Loading ─── */
+.loading-overlay { position:absolute; inset:0; background:rgba(244,244,239,.88); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:6; }
+.loading-overlay.hidden { display:none; }
+.spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; margin-bottom:10px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.loading-text { font-size:12.5px; color:var(--text2); }
+
+/* ─── Quality Card ─── */
+#quality-card { position:absolute; top:14px; left:14px; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border:1px solid var(--border); border-top:3px solid var(--ucsb-navy); border-radius:4px; padding:12px 14px; font-size:11.5px; z-index:4; min-width:160px; display:none; }
+#quality-card.visible { display:block; }
+.qc-score { display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+.qc-badge { font-size:18px; font-weight:700; padding:2px 8px; border-radius:4px; }
+.qc-badge.A { color:var(--ucsb-sea); background:#e6f4f3; }
+.qc-badge.B { color:#8a6500; background:#fff8e1; }
+.qc-badge.C { color:var(--ucsb-coral); background:#fdecea; }
+.qc-label { font-size:12px; font-weight:600; color:var(--text); }
+.qc-row { display:flex; justify-content:space-between; gap:14px; padding:2px 0; border-top:1px solid var(--border); margin-top:2px; padding-top:5px; }
+.qc-key { color:var(--text2); }
+.qc-val { font-weight:500; color:var(--text); font-variant-numeric:tabular-nums; }
+
+/* ─── Color Legend ─── */
+#color-legend { position:absolute; right:14px; top:14px; background:rgba(255,255,255,.93); backdrop-filter:blur(8px); border:1px solid var(--border); border-radius:var(--r); padding:10px 14px; font-size:11.5px; z-index:4; min-width:150px; display:none; }
+#color-legend.visible { display:block; }
+.legend-title { font-weight:600; margin-bottom:7px; font-size:10.5px; text-transform:uppercase; letter-spacing:.3px; color:var(--text2); }
+.legend-bar { height:12px; border-radius:3px; margin-bottom:4px; }
+.legend-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--text2); font-variant-numeric:tabular-nums; }
+
+/* ─── Info bar ─── */
+#info-bar { position:absolute; bottom:14px; left:14px; background:rgba(255,255,255,.93); backdrop-filter:blur(8px); border:1px solid var(--border); border-radius:var(--r); padding:6px 12px; font-size:10.5px; color:var(--text2); z-index:4; display:none; }
+#info-bar.visible { display:flex; gap:14px; }
+#info-bar strong { color:var(--text); }
+
+/* ─── Annotation Modal ─── */
+#ann-modal { position:fixed; inset:0; background:rgba(0,0,0,.3); z-index:100; display:none; align-items:center; justify-content:center; }
+#ann-modal.open { display:flex; }
+.ann-modal-box { background:var(--panel); border-radius:12px; padding:24px; width:340px; box-shadow:0 8px 32px rgba(0,0,0,.15); }
+.ann-modal-box h3 { font-size:15px; font-weight:600; margin-bottom:14px; }
+.ann-modal-box label { font-size:12px; color:var(--text2); display:block; margin-bottom:5px; }
+.ann-modal-box input[type=text], .ann-modal-box textarea { width:100%; border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:12.5px; font-family:inherit; margin-bottom:12px; resize:vertical; }
+.ann-modal-box textarea { min-height:80px; }
+.ann-modal-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+/* ─── Annotation List ─── */
+.ann-item { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 10px; margin-bottom:7px; }
+.ann-item-title { font-weight:600; font-size:12px; margin-bottom:3px; display:flex; justify-content:space-between; align-items:center; }
+.ann-item-note { font-size:11.5px; color:var(--text2); line-height:1.4; }
+.ann-item-coords { font-size:10px; color:var(--text2); margin-top:4px; font-variant-numeric:tabular-nums; }
+.ann-del { background:none; border:none; color:var(--red); cursor:pointer; font-size:12px; padding:0 4px; }
+
+/* ─── CSS2D Labels ─── */
+.ann-label { background:var(--accent); color:white; padding:3px 8px; border-radius:4px; font-size:11px; font-weight:500; white-space:nowrap; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,.2); }
+
+/* ─── Measurement overlay ─── */
+#measure-overlay { position:absolute; bottom:50px; left:14px; background:rgba(255,255,255,.95); backdrop-filter:blur(8px); border:1px solid var(--border); border-radius:var(--r); padding:10px 14px; font-size:11.5px; z-index:4; display:none; min-width:210px; }
+#measure-overlay.visible { display:block; }
+.mrow { display:flex; justify-content:space-between; gap:20px; padding:3px 0; }
+.mrow+.mrow { border-top:1px solid var(--border); margin-top:3px; padding-top:3px; }
+.mkey { color:var(--text2); }
+.mval { font-weight:600; font-variant-numeric:tabular-nums; color:var(--text); }
+
+/* ─── Roughness result ─── */
+.rrow { display:flex; justify-content:space-between; gap:14px; padding:3px 0; border-top:1px solid var(--border); margin-top:2px; padding-top:4px; }
+.rkey { color:var(--text2); }
+.rval { font-weight:600; font-variant-numeric:tabular-nums; color:var(--text); }
+
+/* ─── Backend panel ─── */
+.backend-info { background:#eafaf1; border:1px solid #a9dfbf; border-radius:6px; padding:9px 11px; font-size:11.5px; margin-bottom:10px; }
+.backend-info.off { background:var(--bg); border-color:var(--border); color:var(--text2); }
