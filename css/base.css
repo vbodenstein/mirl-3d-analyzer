@@ -1,0 +1,105 @@
+/* ─── Reset ─── */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  /* ── UCSB Brand Colors ── */
+  --ucsb-navy:   #003660;
+  --ucsb-navy-dk:#002244;
+  --ucsb-navy-md:#0a4878;
+  --ucsb-gold:   #FEBC11;
+  --ucsb-gold-dk:#e5a800;
+  --ucsb-sea:    #09847A;
+  --ucsb-aqua:   #047C91;
+  --ucsb-coral:  #C43424;
+
+  /* ── Surface / Neutral ── */
+  --bg:          #F1EEEA;
+  --bg2:         #EDEADF;
+  --panel:       #ffffff;
+  --border:      #DCD6CC;
+  --border-dk:   #C9BF9D;
+  --text:        #1a1a18;
+  --text2:       #5c5a54;
+  --text3:       #9a9890;
+
+  /* ── Semantic aliases ── */
+  --accent:      #003660;
+  --accent2:     #0a4878;
+  --accent-bg:   #e6edf4;
+  --green:       #09847A;
+  --yellow:      #c49a00;
+  --red:         #C43424;
+  --r:8px;
+  --tab-h:44px;
+}
+
+body {
+  font-family:'Source Sans 3','Segoe UI',-apple-system,sans-serif;
+  background:var(--bg); color:var(--text);
+  height:100vh; overflow:hidden;
+  display:flex; flex-direction:column;
+  font-size:14px;
+}
+
+/* ─── Header ─── */
+header {
+  background:var(--ucsb-navy);
+  border-bottom:3px solid var(--ucsb-gold);
+  padding:0 20px;
+  display:flex; align-items:stretch; justify-content:space-between;
+  flex-shrink:0; min-height:56px;
+}
+.logo { display:flex; align-items:center; gap:12px; padding:10px 0; }
+.logo-icon {
+  width:36px; height:36px;
+  background:var(--ucsb-gold); border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--ucsb-navy); font-weight:800; font-size:14px; letter-spacing:-.5px;
+}
+.logo h1 { font-size:15px; font-weight:600; color:#ffffff; line-height:1.15; letter-spacing:.01em; }
+.logo span { font-size:11px; color:rgba(255,255,255,.6); letter-spacing:.02em; }
+.header-right { display:flex; gap:8px; align-items:center; }
+#backend-badge { font-size:11px; padding:4px 10px; border-radius:20px; border:1px solid rgba(255,255,255,.25); color:rgba(255,255,255,.55); display:none; }
+#backend-badge.connected { color:#5de8a0; border-color:#5de8a0; background:rgba(93,232,160,.1); display:flex; align-items:center; gap:5px; }
+#backend-badge.disconnected { color:rgba(255,255,255,.45); border-color:rgba(255,255,255,.2); display:flex; align-items:center; gap:5px; }
+#backend-badge::before { content:'●'; font-size:8px; }
+header .btn { color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.25); background:transparent; }
+header .btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.4); color:#fff; }
+header .btn-primary { background:var(--ucsb-gold); border-color:var(--ucsb-gold); color:var(--ucsb-navy); font-weight:600; }
+header .btn-primary:hover { background:var(--ucsb-gold-dk); border-color:var(--ucsb-gold-dk); }
+
+/* ─── Tabs ─── */
+.tabs {
+  background:var(--ucsb-navy-dk);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex; align-items:flex-end; padding:0 20px; gap:0; flex-shrink:0;
+}
+.tab {
+  padding:11px 18px; font-size:12.5px; cursor:pointer;
+  border-bottom:3px solid transparent;
+  color:rgba(255,255,255,.55); transition:all .15s; user-select:none;
+  letter-spacing:.015em;
+}
+.tab:hover { color:rgba(255,255,255,.85); background:rgba(255,255,255,.05); }
+.tab.active { color:#fff; border-bottom-color:var(--ucsb-gold); font-weight:600; }
+
+/* ─── Main ─── */
+.main { flex:1; display:flex; overflow:hidden; position:relative; }
+
+/* ─── Tab Panels ─── */
+.tab-panel { display:none; flex:1; overflow:hidden; }
+.tab-panel.active { display:flex; }
+
+/* ─── Sidebar ─── */
+.sidebar { width:285px; background:var(--panel); border-right:1px solid var(--border); overflow-y:auto; flex-shrink:0; }
+.sidebar-section { border-bottom:1px solid var(--border); }
+.ss-header { padding:9px 14px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; color:var(--ucsb-navy); background:var(--bg); cursor:pointer; display:flex; align-items:center; justify-content:space-between; user-select:none; border-left:3px solid transparent; }
+.ss-header:hover { background:var(--bg2); border-left-color:var(--ucsb-gold); }
+.ss-arrow { transition:transform .2s; font-size:9px; color:var(--text3); }
+.ss-header.collapsed .ss-arrow { transform:rotate(-90deg); }
+.ss-header.collapsed + .ss-body { display:none; }
+.ss-body { padding:10px 14px 14px; background:var(--panel); }
+
+/* ─── Scrollbar ─── */
+.sidebar::-webkit-scrollbar, #code-output::-webkit-scrollbar { width:5px; }
+.sidebar::-webkit-scrollbar-thumb, #code-output::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
