@@ -124,6 +124,24 @@
       </div>
 
       <div class="sidebar-section">
+        <div class="ss-header collapsed" onclick="toggleSS(this)">Lighting <span class="ss-arrow">▾</span></div>
+        <div class="ss-body">
+          <div class="cg">
+            <label class="cl">Ambient <span id="lgt-ambient-v">0.60</span></label>
+            <div class="sr"><input type="range" id="lgt-ambient" min="0" max="1.5" step="0.05" value="0.6"></div>
+          </div>
+          <div class="cg">
+            <label class="cl">Directional <span id="lgt-dir-v">0.80</span></label>
+            <div class="sr"><input type="range" id="lgt-dir" min="0" max="2.0" step="0.05" value="0.8"></div>
+          </div>
+          <div class="cg">
+            <label class="cl">Shininess <span id="lgt-shininess-v">25</span></label>
+            <div class="sr"><input type="range" id="lgt-shininess" min="0" max="100" step="5" value="25"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
         <div class="ss-header" onclick="toggleSS(this)">Surface Analysis <span class="ss-arrow">▾</span></div>
         <div class="ss-body">
           <div class="cg">
@@ -301,9 +319,9 @@
         <div class="upload-box" id="upload-box">
           <div class="upload-icon">△</div>
           <h2>Upload a 3D Artifact</h2>
-          <p>Drag &amp; drop an OBJ file here, or click to browse.<br>MTL and texture files are supported.</p>
+          <p>Drag &amp; drop a mesh file here, or click to browse.<br>Supported: OBJ (+ MTL/textures), STL, PLY</p>
           <button class="btn btn-primary">Choose File</button>
-          <input type="file" id="file-input" accept=".obj,.mtl,.jpg,.jpeg,.png" multiple>
+          <input type="file" id="file-input" accept=".obj,.mtl,.stl,.ply,.jpg,.jpeg,.png" multiple>
         </div>
       </div>
       <div class="loading-overlay hidden" id="loading">

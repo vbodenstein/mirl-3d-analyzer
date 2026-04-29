@@ -4,6 +4,9 @@
 
 import * as THREE from 'three';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { PLYLoader } from 'three/addons/loaders/PLYLoader.js';
+import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { App } from '../core/state.js';
 import { scene, sceneAnn, camera, controls, cameraAnn, controlsAnn } from '../core/scenes.js';
 import { showLoad, hideLoad } from '../core/loading.js';
@@ -23,10 +26,38 @@ export function buildMesh(rawGeo, sceneDst) {
   rawGeo.translate(-center.x,-center.y,-center.z);
   rawGeo.scale(sc,sc,sc);
   rawGeo.computeBoundingBox();
-  const mat=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:25});
+  const mat=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:App.shininess});
   const m=new THREE.Mesh(rawGeo,mat);
   sceneDst.add(m);
   return m;
+}
+
+// ── STL / PLY loader ──────────────────────────────────────────────────────────
+export function loadSTLPLY(files, onDone) {
+  const file = [...files].find(f => /\.(stl|ply)$/i.test(f.name));
+  if (!file) { alert('No STL or PLY file found.'); return; }
+  const ext  = file.name.split('.').pop().toLowerCase();
+  const url  = URL.createObjectURL(file);
+  showLoad('Loading model…');
+
+  const onGeo = rawGeo => {
+    // STL triangle soups have duplicate vertices — merge for better curvature
+    let geo = ext === 'stl' ? mergeVertices(rawGeo) : rawGeo;
+    geo.computeVertexNormals();
+    geo.computeBoundingBox();
+    const bb = geo.boundingBox, c = new THREE.Vector3(), s = new THREE.Vector3();
+    bb.getCenter(c); bb.getSize(s);
+    const sc = 2.0 / Math.max(s.x, s.y, s.z);
+    geo.translate(-c.x, -c.y, -c.z);
+    geo.scale(sc, sc, sc);
+    geo.computeBoundingBox();
+    URL.revokeObjectURL(url);
+    onDone(geo, file.name);
+  };
+
+  const onErr = err => { console.error(err); hideLoad(); alert(`Failed to load ${ext.toUpperCase()}.`); };
+  if (ext === 'stl') { new STLLoader().load(url, onGeo, undefined, onErr); }
+  else               { new PLYLoader().load(url, onGeo, undefined, onErr); }
 }
 
 export async function loadOBJ(files, onDone) {
@@ -63,7 +94,7 @@ export async function loadOBJ(files, onDone) {
 }
 
 export function loadMainModel(files) {
-  // Capture raw OBJ for potential IndexedDB storage
+  // Capture raw OBJ for potential IndexedDB storage (OBJ only)
   App.pendingOBJFile = null;
   for (const f of files) {
     if (f.name.toLowerCase().endsWith('.obj')) {
@@ -71,19 +102,22 @@ export function loadMainModel(files) {
       break;
     }
   }
-  loadOBJ(files, (geo, name) => {
+
+  const isSTLPLY = [...files].some(f => /\.(stl|ply)$/i.test(f.name));
+  const loader   = isSTLPLY ? loadSTLPLY : loadOBJ;
+  loader(files, (geo, name) => {
     // Remove old
     if(App.mesh)scene.remove(App.mesh);
     clearOverlays();
     if(App.meshAnn)sceneAnn.remove(App.meshAnn);
 
     App.geo=geo; App.fileName=name;
-    const mat=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:25});
+    const mat=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:App.shininess});
     App.mesh=new THREE.Mesh(geo,mat);
     scene.add(App.mesh);
 
     // Mirror in annotation scene
-    const matAnn=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:25,transparent:true,opacity:.8});
+    const matAnn=new THREE.MeshPhongMaterial({color:0xccccbb,flatShading:false,side:THREE.DoubleSide,shininess:App.shininess,transparent:true,opacity:.8});
     App.meshAnn=new THREE.Mesh(geo,matAnn);
     sceneAnn.add(App.meshAnn);
 

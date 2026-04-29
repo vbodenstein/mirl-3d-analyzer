@@ -105,6 +105,7 @@ export function enableRadianceScaling() {
 
 export function disableRadianceScaling() {
   if (!App.mesh || !_savedMaterial) return;
+  _savedMaterial.shininess = App.shininess; // apply any slider changes made while RS was active
   App.mesh.material = _savedMaterial;
   _savedMaterial    = null;
   _rsMaterial       = null;
