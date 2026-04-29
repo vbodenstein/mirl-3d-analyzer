@@ -159,6 +159,26 @@
       </div>
 
       <div class="sidebar-section">
+        <div class="ss-header collapsed" onclick="toggleSS(this)">Radiance Scaling <span class="ss-arrow">▾</span></div>
+        <div class="ss-body">
+          <div class="cg">
+            <label class="chk"><input type="checkbox" id="chk-radiance"> Enable Radiance Scaling</label>
+            <div style="font-size:10.5px;color:var(--text2);margin-top:4px;line-height:1.4">Vergne et al. 2010 — scales diffuse by mean curvature to emphasize surface shape</div>
+          </div>
+          <div id="rs-controls" style="display:none">
+            <div class="cg">
+              <label class="cl">Strength <span id="rs-strength-v">1.5</span></label>
+              <div class="sr"><input type="range" id="rs-strength" min="0.5" max="3.0" step="0.1" value="1.5"></div>
+            </div>
+            <div class="cg">
+              <label class="cl">Gamma <span id="rs-gamma-v">5.0</span></label>
+              <div class="sr"><input type="range" id="rs-gamma" min="1" max="10" step="0.5" value="5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
         <div class="ss-header" onclick="toggleSS(this)">Cross-Section <span class="ss-arrow">▾</span></div>
         <div class="ss-body">
           <div class="cg"><label class="chk"><input type="checkbox" id="chk-clip"> Enable Clipping Plane</label></div>

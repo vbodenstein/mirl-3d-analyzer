@@ -19,6 +19,7 @@ import './core/loading.js';
 
 import './analysis/color-maps.js';
 import './analysis/curvature.js';
+import './analysis/radiance-scaling.js';
 import './analysis/quality.js';
 import './analysis/adjacency.js';
 

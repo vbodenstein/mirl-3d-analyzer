@@ -11,6 +11,7 @@ import { computeCurvature, applyCurvatureColors } from '../analysis/curvature.js
 import { computeQuality, updateQualityCard } from '../analysis/quality.js';
 import { updateViewMode, updateClipping, clearOverlays } from './view-modes.js';
 import { showSaveDbSection } from '../features/database.js';
+import { resetRS } from '../analysis/radiance-scaling.js';
 import { updateScriptContext } from '../features/scripts.js';
 
 export function buildMesh(rawGeo, sceneDst) {
@@ -88,6 +89,12 @@ export function loadMainModel(files) {
 
     showLoad('Computing surface analysis…');
     setTimeout(()=>{
+      // Reset radiance scaling so the fresh MeshPhongMaterial is not orphaned
+      App.radianceScaling = false;
+      resetRS();
+      const chkRS = document.getElementById('chk-radiance');
+      if (chkRS) { chkRS.checked = false; document.getElementById('rs-controls').style.display = 'none'; }
+
       App.curv=computeCurvature(geo);
       App.qual=computeQuality(geo);
       updateQualityCard();
