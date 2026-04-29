@@ -26,6 +26,11 @@ export const App = {
   cmpCmapL: 'turbo', cmpCmapR: 'coolwarm',
   syncCam: true,
 
+  // Lighting
+  ambientInt: 0.6,
+  dirInt: 0.8,
+  shininess: 25,
+
   // Radiance Scaling
   radianceScaling: false,
   rsStrength: 1.5,

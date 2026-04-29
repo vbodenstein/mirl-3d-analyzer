@@ -5,7 +5,7 @@
 
 import * as THREE from 'three';
 import { App } from '../core/state.js';
-import { scene, sceneAnn, axesHelper, renderer, camera } from '../core/scenes.js';
+import { scene, sceneAnn, axesHelper, renderer, camera, ambientLight, dirLight } from '../core/scenes.js';
 import { applyCurvatureColors } from '../analysis/curvature.js';
 import { updateViewMode, updateClipping, clearOverlays } from '../viewer/view-modes.js';
 import { renderAnnotationList, exportAnnotations } from '../features/annotations.js';
@@ -32,6 +32,23 @@ document.getElementById('bg-mode').addEventListener('click', e => {
 
 // ── Axes ──
 document.getElementById('chk-axes').addEventListener('change', e => { axesHelper.visible = e.target.checked; });
+
+// ── Lighting ──
+document.getElementById('lgt-ambient').addEventListener('input', e => {
+  App.ambientInt = +e.target.value;
+  document.getElementById('lgt-ambient-v').textContent = App.ambientInt.toFixed(2);
+  ambientLight.intensity = App.ambientInt;
+});
+document.getElementById('lgt-dir').addEventListener('input', e => {
+  App.dirInt = +e.target.value;
+  document.getElementById('lgt-dir-v').textContent = App.dirInt.toFixed(2);
+  dirLight.intensity = App.dirInt;
+});
+document.getElementById('lgt-shininess').addEventListener('input', e => {
+  App.shininess = +e.target.value;
+  document.getElementById('lgt-shininess-v').textContent = App.shininess;
+  if (App.mesh?.material?.shininess !== undefined) App.mesh.material.shininess = App.shininess;
+});
 
 // ── Curvature ──
 document.getElementById('curv-mode').addEventListener('click', e => {

@@ -32,9 +32,10 @@ export const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-const dir1 = new THREE.DirectionalLight(0xffffff, 0.8);
-dir1.position.set(2, 3, 3); scene.add(dir1);
+export const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
+export const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+dirLight.position.set(2, 3, 3); scene.add(dirLight);
 const dir2 = new THREE.DirectionalLight(0xffffff, 0.25);
 dir2.position.set(-2, -1, -2); scene.add(dir2);
 
