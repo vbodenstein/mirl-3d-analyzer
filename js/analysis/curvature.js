@@ -6,6 +6,7 @@
 import * as THREE from 'three';
 import { App } from '../core/state.js';
 import { getCmap, legendGradient } from './color-maps.js';
+import { buildBaseColorAttr } from './radiance-scaling.js';
 
 export function computeCurvature(geo) {
   const pos = geo.attributes.position;
@@ -71,6 +72,37 @@ export function computeCurvature(geo) {
 }
 
 export function applyColors(geo, mesh, curvMode, cmapName, clipLo, clipHi) {
+  // ── Radiance Scaling mode: update color BufferAttribute only; ShaderMaterial handles rendering ──
+  if (App.radianceScaling) {
+    if (curvMode === 'none' || !App.curv[curvMode]) {
+      buildBaseColorAttr(geo);
+      document.getElementById('color-legend').classList.remove('visible');
+      return;
+    }
+    const data = App.curv[curvMode];
+    const cmap = getCmap(cmapName);
+    const sorted = [...data].filter(isFinite).sort((a,b) => a-b);
+    const lo = sorted[Math.floor(sorted.length * clipLo / 100)] || 0;
+    const hi = sorted[Math.floor(sorted.length * clipHi / 100)] || 1;
+    const range = hi - lo || 1;
+    const nV = data.length;
+    const cols = new Float32Array(nV * 3);
+    for (let i = 0; i < nV; i++) {
+      const t = (data[i]-lo)/range, [r,g,b] = cmap(t);
+      cols[i*3]=r; cols[i*3+1]=g; cols[i*3+2]=b;
+    }
+    geo.setAttribute('color', new THREE.BufferAttribute(cols, 3));
+    geo.attributes.color.needsUpdate = true;
+    const labels = {mean:'Mean Curvature', gaussian:'Gaussian Curvature', curvedness:'Curvedness'};
+    document.getElementById('legend-title').textContent = labels[curvMode] || '';
+    document.getElementById('legend-bar').style.background = legendGradient(cmapName);
+    document.getElementById('legend-min').textContent = lo.toFixed(4);
+    document.getElementById('legend-max').textContent = hi.toFixed(4);
+    document.getElementById('color-legend').classList.add('visible');
+    return;
+  }
+
+  // ── Standard Phong path ──
   if(curvMode==='none'||!App.curv[curvMode]){
     mesh.material.vertexColors=false;
     mesh.material.color.set(0xccccbb);

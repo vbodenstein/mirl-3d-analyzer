@@ -13,6 +13,7 @@ import { rendererAnn } from '../core/scenes.js';
 import { Measure } from '../analysis/measurement.js';
 import { Brush } from '../analysis/surface-texture.js';
 import { resetAdj } from '../analysis/adjacency.js';
+import { enableRadianceScaling, disableRadianceScaling, updateRSUniforms, resetRS } from '../analysis/radiance-scaling.js';
 
 // ── View mode ──
 document.getElementById('view-mode').addEventListener('click', e => {
@@ -90,6 +91,11 @@ document.getElementById('btn-new').addEventListener('click', () => {
   document.getElementById('sdb-status').style.display = 'none';
   document.getElementById('btn-sdb-save').textContent = 'Save to Database';
   document.getElementById('btn-sdb-save').disabled = false;
+  // Reset radiance scaling
+  App.radianceScaling = false;
+  resetRS();
+  document.getElementById('chk-radiance').checked = false;
+  document.getElementById('rs-controls').style.display = 'none';
   // Clear brush overlay and measurements on new file
   if (Brush.overlay) { scene.remove(Brush.overlay); Brush.overlay = null; }
   Brush.selected.clear();
@@ -115,6 +121,30 @@ document.getElementById('btn-ann-mode').addEventListener('click', () => {
     btn.classList.remove('btn-primary');
     rendererAnn.domElement.style.cursor = '';
   }
+});
+
+// ── Radiance Scaling ──
+document.getElementById('chk-radiance').addEventListener('change', e => {
+  App.radianceScaling = e.target.checked;
+  document.getElementById('rs-controls').style.display = App.radianceScaling ? '' : 'none';
+  if (App.radianceScaling) {
+    enableRadianceScaling();
+  } else {
+    disableRadianceScaling();
+    applyCurvatureColors();
+  }
+});
+
+document.getElementById('rs-strength').addEventListener('input', e => {
+  App.rsStrength = +e.target.value;
+  document.getElementById('rs-strength-v').textContent = App.rsStrength.toFixed(1);
+  updateRSUniforms();
+});
+
+document.getElementById('rs-gamma').addEventListener('input', e => {
+  App.rsGamma = +e.target.value;
+  document.getElementById('rs-gamma-v').textContent = App.rsGamma.toFixed(1);
+  updateRSUniforms();
 });
 
 // ── Pin color ──
