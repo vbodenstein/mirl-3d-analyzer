@@ -32,19 +32,45 @@ export function computeQuality(geo) {
   }
   const boundaryEdges = Object.values(edgeMap).filter(v => v === 1).length;
 
+  // Build adjacency for boundary vertices so we can trace connected loops
+  const bAdj = {};
+  for (const [k, cnt] of Object.entries(edgeMap)) {
+    if (cnt !== 1) continue;
+    const [a, b] = k.split('|').map(Number);
+    (bAdj[a] = bAdj[a] || []).push(b);
+    (bAdj[b] = bAdj[b] || []).push(a);
+  }
+  const seen = new Set();
+  const loops = [];
+  for (const v of Object.keys(bAdj).map(Number)) {
+    if (seen.has(v)) continue;
+    const members = [];
+    const stack = [v];
+    while (stack.length) {
+      const cur = stack.pop();
+      if (seen.has(cur)) continue;
+      seen.add(cur); members.push(cur);
+      for (const nb of bAdj[cur]) if (!seen.has(nb)) stack.push(nb);
+    }
+    loops.push(members);
+  }
+  // Largest loop = intended open boundary (e.g. base of vessel); rest = actual holes
+  loops.sort((a, b) => b.length - a.length);
+  const holeCount = Math.max(0, loops.length - 1);
+
   const bb = geo.boundingBox;
   const sz = new THREE.Vector3();
   bb.getSize(sz);
 
   const densityScore = Math.min(40, nV / 5000 * 40);
   const uniformScore = uniformity * 40;
-  const holeScore = Math.max(0, 20 - boundaryEdges * 0.1);
+  const holeScore    = Math.max(0, 20 - holeCount * 4);
   const total = Math.round(densityScore + uniformScore + holeScore);
 
   const grade = total >= 80 ? 'A' : total >= 60 ? 'B' : 'C';
   const label = total >= 80 ? 'Excellent' : total >= 60 ? 'Good' : 'Needs Review';
 
-  return { nV, nF: Math.round(nF), uniformity, boundaryEdges, grade, label, score: total, dims: sz };
+  return { nV, nF: Math.round(nF), uniformity, boundaryEdges, holeCount, grade, label, score: total, dims: sz };
 }
 
 export function updateQualityCard() {
@@ -60,5 +86,6 @@ export function updateQualityCard() {
   const s = q.dims;
   document.getElementById('qc-dims').textContent = `${s.x.toFixed(2)}×${s.y.toFixed(2)}×${s.z.toFixed(2)}`;
   document.getElementById('qc-uniform').textContent = (q.uniformity * 100).toFixed(1) + '%';
-  document.getElementById('qc-holes').textContent = q.boundaryEdges.toLocaleString();
+  document.getElementById('qc-holes').textContent =
+    q.holeCount === 0 ? 'None' : `${q.holeCount} (${q.boundaryEdges.toLocaleString()} boundary edges)`;
 }
