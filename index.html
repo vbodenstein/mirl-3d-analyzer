@@ -465,6 +465,15 @@
         </div>
       </div>
       <div class="sidebar-section">
+        <div class="ss-header" onclick="toggleSS(this)">Server <span class="ss-arrow">▾</span></div>
+        <div class="ss-body">
+          <div class="cg"><label class="cl">Server URL</label><input type="text" id="db-server-url" placeholder="http://localhost:5005" style="width:100%;padding:5px 8px;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:monospace;"></div>
+          <div class="cg"><button class="btn btn-sm btn-block" id="btn-db-server-connect">Connect</button></div>
+          <div id="db-server-status-msg" style="font-size:10.5px;margin-top:4px;display:none"></div>
+          <div class="cg" style="margin-top:4px"><div style="font-size:10.5px;color:var(--text2);line-height:1.5;">Enter the address of the shared database server. Each computer that should share the catalog needs to connect to the same URL.</div></div>
+        </div>
+      </div>
+      <div class="sidebar-section">
         <div class="ss-header" onclick="toggleSS(this)">Export <span class="ss-arrow">▾</span></div>
         <div class="ss-body">
           <div class="cg"><button class="btn btn-sm btn-block" id="btn-db-export-csv">Export All as CSV</button></div>

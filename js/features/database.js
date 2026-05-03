@@ -12,9 +12,11 @@ import { App } from '../core/state.js';
 import { resizeAll } from '../core/scenes.js';
 import { loadMainModel } from '../viewer/loader.js';
 
-const DB_KEY    = 'mirl_artifact_db';
-const SERVER_URL = 'http://128.111.216.169:5005';
+const DB_KEY         = 'mirl_artifact_db';
+const SERVER_URL_KEY = 'mirl_server_url';
+const DEFAULT_SERVER = 'http://localhost:5005';
 
+let SERVER_URL     = localStorage.getItem(SERVER_URL_KEY) || DEFAULT_SERVER;
 let serverOnline   = false;
 let _serverRecords = [];   // cached from last successful GET /artifacts
 
@@ -55,6 +57,39 @@ async function checkServer() {
 
 checkServer();
 setInterval(checkServer, 6000);
+
+// Populate the URL input with whatever is saved
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('db-server-url');
+  if (input) input.value = SERVER_URL;
+});
+// Also set immediately in case DOMContentLoaded already fired
+const _urlInput = document.getElementById('db-server-url');
+if (_urlInput) _urlInput.value = SERVER_URL;
+
+document.getElementById('btn-db-server-connect').addEventListener('click', async () => {
+  const input  = document.getElementById('db-server-url');
+  const msgEl  = document.getElementById('db-server-status-msg');
+  const newURL = (input.value || '').trim().replace(/\/$/, '');
+  if (!newURL) return;
+
+  SERVER_URL = newURL;
+  localStorage.setItem(SERVER_URL_KEY, SERVER_URL);
+
+  msgEl.textContent   = 'Connecting…';
+  msgEl.style.color   = 'var(--text2)';
+  msgEl.style.display = '';
+
+  await checkServer();
+
+  if (serverOnline) {
+    msgEl.textContent = `Connected to ${SERVER_URL}`;
+    msgEl.style.color = 'var(--green, #4caf50)';
+  } else {
+    msgEl.textContent = `Could not reach ${SERVER_URL}`;
+    msgEl.style.color = 'var(--yellow, #f0a500)';
+  }
+});
 
 // Upload artifact to server; returns { ok, id, hasFile } or null on failure.
 async function serverSaveArtifact(record, fileBuffer, fileName) {
