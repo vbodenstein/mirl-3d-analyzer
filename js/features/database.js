@@ -14,7 +14,7 @@ import { loadMainModel } from '../viewer/loader.js';
 
 const DB_KEY         = 'mirl_artifact_db';
 const SERVER_URL_KEY = 'mirl_server_url';
-const DEFAULT_SERVER = 'http://localhost:5005';
+const DEFAULT_SERVER = 'http://128.111.216.169:5005';
 
 let SERVER_URL     = localStorage.getItem(SERVER_URL_KEY) || DEFAULT_SERVER;
 let serverOnline   = false;
