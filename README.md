@@ -33,6 +33,14 @@ cd mirl-3d-analyzer
 python3 -m http.server 8000
 ```
 
+To access the local server database: 
+```bash
+cd mirl-3d-analyzer
+cd backend
+python3 mirl-db-server.py
+```
+
+
 Open <http://localhost:8000> in your browser. 
 
 > **Note:** opening `index.html` directly by double-clicking (via `file://`)
