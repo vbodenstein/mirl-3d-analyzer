@@ -172,11 +172,11 @@ def get_file(artifact_id):
             'SELECT * FROM artifacts WHERE id = ?', (artifact_id,)
         ).fetchone()
     if not row or not row['has_file']:
-        abort(404)
+        return jsonify({'error': 'No file stored for this artifact'}), 404
 
     stored = list(FILES_DIR.glob(f'{artifact_id}_*'))
     if not stored:
-        abort(404)
+        return jsonify({'error': 'File missing from disk'}), 404
 
     download_name = os.path.basename(row['filename'] or 'model.obj')
     return send_file(str(stored[0]), as_attachment=True, download_name=download_name)

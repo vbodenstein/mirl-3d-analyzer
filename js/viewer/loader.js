@@ -94,13 +94,11 @@ export async function loadOBJ(files, onDone) {
 }
 
 export function loadMainModel(files) {
-  // Capture raw OBJ for potential IndexedDB storage (OBJ only)
+  // Capture raw file bytes for database storage (OBJ, STL, PLY)
   App.pendingOBJFile = null;
-  for (const f of files) {
-    if (f.name.toLowerCase().endsWith('.obj')) {
-      f.arrayBuffer().then(ab => { App.pendingOBJFile = {name: f.name, arrayBuffer: ab}; });
-      break;
-    }
+  const mainFile = [...files].find(f => /\.(obj|stl|ply)$/i.test(f.name));
+  if (mainFile) {
+    mainFile.arrayBuffer().then(ab => { App.pendingOBJFile = { name: mainFile.name, arrayBuffer: ab }; });
   }
 
   const isSTLPLY = [...files].some(f => /\.(stl|ply)$/i.test(f.name));

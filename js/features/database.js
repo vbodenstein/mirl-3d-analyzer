@@ -463,7 +463,11 @@ window.dbAnalyze = async function (id, source) {
         setTimeout(() => prefillSaveSection(serverRecord), 200);
         return;
       }
-    } catch { /* fall through to local */ }
+      const err = await resp.json().catch(() => ({}));
+      console.warn('Server file fetch failed:', resp.status, err);
+    } catch (e) {
+      console.warn('Server file fetch error:', e);
+    }
   }
 
   // Fall back to local IndexedDB
