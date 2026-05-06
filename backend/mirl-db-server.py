@@ -179,7 +179,9 @@ def get_file(artifact_id):
         return jsonify({'error': 'File missing from disk'}), 404
 
     download_name = os.path.basename(row['filename'] or 'model.obj')
-    return send_file(str(stored[0]), as_attachment=True, download_name=download_name)
+    import flask as _flask
+    kw = 'download_name' if int(_flask.__version__.split('.')[0]) >= 2 else 'attachment_filename'
+    return send_file(str(stored[0]), as_attachment=True, **{kw: download_name})
 
 
 @app.route('/artifacts/<artifact_id>', methods=['DELETE'])
