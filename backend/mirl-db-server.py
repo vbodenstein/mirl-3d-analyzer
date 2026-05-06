@@ -20,8 +20,10 @@ Install:
 
 Run:
     python3 mirl-db-server.py
+    python3 mirl-db-server.py --storage /Volumes/MyLabDrive
 """
 
+import argparse
 import json
 import os
 import sqlite3
@@ -31,10 +33,15 @@ from pathlib import Path
 from flask import Flask, jsonify, request, send_file, abort
 from flask_cors import CORS
 
-HERE = Path(__file__).parent
-DB_PATH = HERE / 'artifact_db.sqlite'
-FILES_DIR = HERE / 'db_files'
-FILES_DIR.mkdir(exist_ok=True)
+parser = argparse.ArgumentParser()
+parser.add_argument('--storage', default=None,
+                    help='Directory to store the database and files (default: backend/ folder)')
+args = parser.parse_args()
+
+STORAGE_DIR = Path(args.storage) if args.storage else Path(__file__).parent
+DB_PATH   = STORAGE_DIR / 'artifact_db.sqlite'
+FILES_DIR = STORAGE_DIR / 'db_files'
+FILES_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__)
 CORS(app)
