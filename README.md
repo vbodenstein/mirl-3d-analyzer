@@ -19,6 +19,16 @@ nothing is uploaded: a scan you open stays on your machine. The tool is free and
 open source, and it is meant to be picked up by a student, curator, or
 researcher without a technical background.
 
+The Analyzer is one of four MIRL instruments for heritage after crisis, built
+to work alone or in sequence: [rescue-archiving](https://github.com/mirl-ucsb/rescue-archiving)
+makes a verifiable copy of at-risk online media before it disappears,
+[MIRL Aftermath](https://github.com/mirl-ucsb/mirl-aftermath) builds the
+condition dossier for damage to what still stands,
+[MIRL Lacuna](https://github.com/mirl-ucsb/mirl-lacuna) catalogues what is
+gone, and the Analyzer measures what survives. Each keeps its exports plain
+and portable, so work moves between the tools without lock-in. The four
+together: [mirl.arthistory.ucsb.edu/mirl-tools](https://mirl.arthistory.ucsb.edu/mirl-tools/).
+
 ## Why a tool like this
 
 Museums and labs increasingly scan objects with structured-light scanners and
